@@ -1,63 +1,92 @@
-<!DOCTYPE html>
-
 <html>
 
 <head>
-
 	<title>Ajedrez</title>
-
-	<style>
-
-		body{
-			margin:0 auto;
-		}
-
-		td{
-			border: 1px solid black;
-			height: 20px;
-			width: 20px;
-		}
-		.color{
-			background-color: black;
-		}
-
-	</style>
-
+	<link rel="stylesheet" type="text/css" href="CSS/tablero.css">
 </head>
-
 
 <body>
 
+	<form action = "" method="post"> Escriure la posicio:
+		<input type="text" name="posicio" value="">
+		<input type="submit" name="submit" value="Executar">
+	</form>
+
+	<br>
+
+	<table>
 	<?php
+		session_start();
+		
+		if(!isset($_SESSION["rei"])){
+			$_SESSION["rei"] = 'A4';
+			$ultima_pos = $_SESSION["rei"];
 
-		$filas = 8;
-	    $celdas = 8;
-	    $letras = "A";
+		}
 
-	    echo "<table>";
+		else{
+			$ultima_pos = $_SESSION["rei"];
+			$_SESSION["rei"] = strtoupper($_POST['posicio']);
+		}
+		
+		$array = ["A","B","C","D","E","F","G","H"];	
+		$lletras = "A";
+		
+		foreach ($array as $key => $value) {
+			if(substr($_SESSION["rei"],0,1) == $value){
+				$letra = $key;
+			}
 
-	    for( $i=0; $i<=$filas; $i++ ) { 
-	        echo "<tr></tr>\n";
-	        for($j=1; $j<=$celdas+1; $j++) {
+			if(substr($ultima_pos,0,1) == $value){
+				$letraUP = 	$key;
+			}
+		}
 
-	        	if($j>$celdas){
-	        		echo "<tr></tr>\n";
-	        	}
+		if( $letra == $letraUP++ or $letra == $letraUP-- && substr($_SESSION["rei"],1,1) == substr($ultima_pos,1,1)){}else{$_SESSION["rei"] = $ultima_pos;}		
 
-	        	else if (($i % 2 == 0 && $j % 2 == 0)|($i % 2 != 0 && $j % 2 != 0)){
-	        		echo "<td class='color'></td>\n";
-	        	}
+		echo "<tr>";
+			for($n=0;$n<=8;$n++){
+				echo "<td class='lletras'>".$n."</td>";
+			}
 
-	        	else{
-	        		echo "<td></td>\n";
-	        	}
+		echo "</tr>";
 
-	       }
-	   }
+		for($f=1;$f<=8;$f++){
+			echo "<tr>";
+			echo "<td class='lletras'>".$lletras."</td>";
+			
+			for($c=1;$c<=8;$c++){
 
-	   echo "</table>";
+				if(($f%2==0 && $c%2==0) | ($f%2!=0 && $c%2!=0)){
 
+					if($lletras.$c == $_SESSION["rei"]){
+						echo "<td class='negres' value='".$lletras.$c."'><img src='rei.svg'></td>";
+
+					}
+
+					else{
+						echo "<td class='negres' value='".$lletras.$c."'></td>";
+					}
+
+				}
+
+				else{
+
+					if($lletras.$c == $_SESSION["rei"]){
+						echo "<td value='".$lletras.$c."'><img src='rei.svg'></td>";
+
+					}
+
+					else{
+						echo "<td value='".$lletras.$c."'></td>";
+					}
+				}
+			}
+			echo "</tr>";
+			$lletras++;
+		}
 	?>
+	</table>
 
 </body>
 
