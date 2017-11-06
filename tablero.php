@@ -18,31 +18,25 @@
 	<?php
 		session_start();
 		
-		if(!isset($_SESSION["rei"])){
-			$_SESSION["rei"] = 'A4';
-			$ultima_pos = $_SESSION["rei"];
+		if(!isset($_SESSION["torre"])){
+			$_SESSION["torre"] = 'A1';
+			$ultima_pos = $_SESSION["torre"];
 
 		}
 
 		else{
-			$ultima_pos = $_SESSION["rei"];
-			$_SESSION["rei"] = strtoupper($_POST['posicio']);
+			$ultima_pos = $_SESSION["torre"];
+			$_SESSION["torre"] = strtoupper($_POST['posicio']);
 		}
 		
 		$array = ["A","B","C","D","E","F","G","H"];	
 		$lletras = "A";
 		
-		foreach ($array as $key => $value) {
-			if(substr($_SESSION["rei"],0,1) == $value){
-				$letra = $key;
-			}
-
-			if(substr($ultima_pos,0,1) == $value){
-				$letraUP = 	$key;
-			}
+		if(substr($ultima_pos,0,1) == substr($_SESSION["torre"],0,1) or substr($ultima_pos,1,1) == substr($_SESSION["torre"],1,1)){
+	
+		}else{
+			$_SESSION["torre"] = $ultima_pos;
 		}
-
-		if( $letra == $letraUP++ or $letra == $letraUP-- && substr($_SESSION["rei"],1,1) == substr($ultima_pos,1,1)){}else{$_SESSION["rei"] = $ultima_pos;}		
 
 		echo "<tr>";
 			for($n=0;$n<=8;$n++){
@@ -59,8 +53,8 @@
 
 				if(($f%2==0 && $c%2==0) | ($f%2!=0 && $c%2!=0)){
 
-					if($lletras.$c == $_SESSION["rei"]){
-						echo "<td class='negres' value='".$lletras.$c."'><img src='rei.svg'></td>";
+					if($lletras.$c == $_SESSION["torre"]){
+						echo "<td class='negres' value='".$lletras.$c."'><img src='torre.svg'></td>";
 
 					}
 
@@ -72,8 +66,8 @@
 
 				else{
 
-					if($lletras.$c == $_SESSION["rei"]){
-						echo "<td value='".$lletras.$c."'><img src='rei.svg'></td>";
+					if($lletras.$c == $_SESSION["torre"]){
+						echo "<td value='".$lletras.$c."'><img src='torre.svg'></td>";
 
 					}
 
